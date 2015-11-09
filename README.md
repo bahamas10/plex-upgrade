@@ -8,7 +8,7 @@ Will result in a noop if the latest version is already available
 Usage
 -----
 
-    $ sudo ./upgrade-plex
+    $ sudo ./plex-upgrade
     installed: 0.9.12.11.1406-8403350
     latest: 0.9.12.13.1464-4ccd2ca
     downloading https://downloads.plex.tv/plex-media-server/0.9.12.13.1464-4ccd2ca/plexmediaserver_0.9.12.13.1464-4ccd2ca_amd64.deb to /home/dave/.plex/pkg/plexmediaserver_0.9.12.13.1464-4ccd2ca_amd64.deb...
