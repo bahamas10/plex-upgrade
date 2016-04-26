@@ -5,6 +5,8 @@ Upgrade plex on Ubuntu in the easiest way possible
 
 Will result in a noop if the latest version is already available
 
+Pass an optional token as the first argument if you are a Plex Pass user
+
 Usage
 -----
 

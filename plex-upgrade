@@ -22,7 +22,7 @@ echo "installed: ${installed:-(none)}"
 
 # grab the packages
 [[ -n $1 ]] && plexurl="https://plex.tv/downloads/latest/1?channel=8&build=linux-ubuntu-x86_64&distro=ubuntu&X-Plex-Token=$1"
-html=$(curl -sS $plexurl) || fatal 'failed to list packages'
+html=$(curl -sS "$plexurl") || fatal 'failed to list packages'
 
 # find the latest deb
 read -r version url < <(perl -lne '/<a href="([^"]+\/plexmediaserver_([^ ]+)_amd64\.deb)"/ && printf "$2 $1\n"' <<< "$html")
