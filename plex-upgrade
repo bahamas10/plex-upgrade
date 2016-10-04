@@ -6,13 +6,20 @@
 # Date: September 23, 2015
 # License: MIT
 
+plexurl='https://plex.tv/downloads/latest/1?build=linux-ubuntu-x86_64&distro=ubuntu'
 pkgdir=~/.plex/pkg
-plexurl='https://plex.tv/downloads'
 
 fatal() {
 	echo "FATAL: $*" >&2
 	exit 1
 }
+
+if [[ -n $1 ]]; then
+	plexurl+="&X-Plex-Token=$1"
+	plexurl+="&channel=8"
+else
+	plexurl+="&channel=16"
+fi
 
 mkdir -p "$pkgdir"
 
@@ -20,12 +27,9 @@ mkdir -p "$pkgdir"
 read -r _ installed < <(dpkg-query -W plexmediaserver 2>/dev/null)
 echo "installed: ${installed:-(none)}"
 
-# grab the packages
-[[ -n $1 ]] && plexurl="https://plex.tv/downloads/latest/1?channel=8&build=linux-ubuntu-x86_64&distro=ubuntu&X-Plex-Token=$1"
-html=$(curl -sS "$plexurl") || fatal 'failed to list packages'
-
-# find the latest deb
-read -r version url < <(perl -lne '/<a href="([^"]+\/plexmediaserver_([^ ]+)_amd64\.deb)"/ && printf "$2 $1\n"' <<< "$html")
+# grab the latest package
+url=$(curl -sSI "$plexurl" | grep ^Location: | tr -d '[[:cntrl:]]' | sed -e 's/^Location: //')
+version=$(sed -e 's/.*plexmediaserver_\(.*\)_amd64\.deb/\1/' <<< "$url")
 [[ -n $version && -n $url ]] || fatal 'failed to extract latest version and download url'
 echo "latest: $version"
 
